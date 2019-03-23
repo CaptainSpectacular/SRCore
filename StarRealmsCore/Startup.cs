@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StarRealmsCore.Data;
+using StarRealmsCore.Services;
 
 namespace StarRealmsCore
 {
@@ -30,6 +32,9 @@ namespace StarRealmsCore
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<AppDbContext>()
+                .AddEntityFrameworkNpgsql()
+                .BuildServiceProvider();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
