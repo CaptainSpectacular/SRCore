@@ -7,7 +7,6 @@ namespace StarRealmsCore.Data
 {
     public class CardEffect
     {
-        public int Id { get; set; }
         public int CardId { get; set; }
         public Card Card { get; set; }
         public int EffectId { get; set; }

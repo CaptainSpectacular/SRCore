@@ -7,7 +7,6 @@ namespace StarRealmsCore.Data
 {
     public class FieldCard
     {
-        public int Id { get; set; }
         public int FieldId { get; set; }
         public Field Field { get; set; }
         public int CardId { get; set; }
