@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using StarRealmsCore.Models.Players;
 
-namespace StarRealmsCore.Data
+namespace StarRealmsCore.Models.Games
 {
-    public class Game
+    public class GameViewModel
     {
         public int Id { get; set; }
         public int PlayerTurn { get; set; }
-        public ICollection<PlayerGame> PlayerGames { get; set; }
+        public ICollection<PlayerViewModel> Players { get; set; }
     }
 }

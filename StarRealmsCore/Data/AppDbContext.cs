@@ -22,6 +22,7 @@ namespace StarRealmsCore.Data
         public DbSet<Player> Players { get; set; }
         public DbSet<TradeCard> TradeCards { get; set; }
         public DbSet<TradeRow> TradeRows { get; set; }
+        public DbSet<PlayerGame> PlayerGames { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseNpgsql("Host=localhost;Database=StarRealmsCore_development;Username=sradmin;Password=a7b2844e766e3cd5b751cf3ce1e45a99");
@@ -92,6 +93,19 @@ namespace StarRealmsCore.Data
                 .HasOne(cf => cf.Faction)
                 .WithMany(f => f.CardFactions)
                 .HasForeignKey(cf => cf.FactionId);
+
+            modelBuilder.Entity<PlayerGame>()
+                .HasKey(pg => new { pg.PlayerId, pg.GameId });
+
+            modelBuilder.Entity<PlayerGame>()
+                .HasOne(pg => pg.Player)
+                .WithMany(p => p.PlayerGames)
+                .HasForeignKey(pg => pg.PlayerId);
+
+            modelBuilder.Entity<PlayerGame>()
+                .HasOne(pg => pg.Game)
+                .WithMany(g => g.PlayerGames)
+                .HasForeignKey(pg => pg.GameId);
         }
     }
 }
