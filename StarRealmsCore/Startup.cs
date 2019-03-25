@@ -36,6 +36,9 @@ namespace StarRealmsCore
                 .AddEntityFrameworkNpgsql()
                 .BuildServiceProvider();
 
+            services.AddScoped<GameService>();
+            services.AddScoped<PlayerService>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
