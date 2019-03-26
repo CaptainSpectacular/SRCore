@@ -24,8 +24,19 @@ namespace StarRealmsCore.Data
         public DbSet<TradeRow> TradeRows { get; set; }
         public DbSet<PlayerGame> PlayerGames { get; set; }
 
+        public AppDbContext()
+        { }
+
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Host=localhost;Database=StarRealmsCore_development;Username=sradmin;Password=a7b2844e766e3cd5b751cf3ce1e45a99");
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseNpgsql("Host=localhost;Database=StarRealmsCore_development;Username=sradmin;Password=a7b2844e766e3cd5b751cf3ce1e45a99");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
