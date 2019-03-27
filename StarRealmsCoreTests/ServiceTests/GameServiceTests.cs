@@ -1,17 +1,13 @@
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc.Testing;
-using StarRealmsCore.Services;
-using StarRealmsCore.Data;
-using StarRealmsCore.Models.Games;
-using System;
 using System.Collections.Generic;
+using System.Linq;
+using StarRealmsCore.Data;
+using StarRealmsCore.Services;
+using StarRealmsCore.Models.Games;
 using Xunit;
 
 namespace StarRealmsCoreTests.ServiceTests
 {
-    public class GameServiceTests
+    public class GameServiceTests : IDbConnector
     {
 
         [Fact]
@@ -37,20 +33,6 @@ namespace StarRealmsCoreTests.ServiceTests
                 Assert.Equal(1, result1.PlayerTurn); 
                 Assert.Equal(0, result2.PlayerTurn); 
             }
-        }
-
-        public DbContextOptions<AppDbContext> CreateNewContextOptions()
-        {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkInMemoryDatabase()
-                .BuildServiceProvider();
-
-            var builder = new DbContextOptionsBuilder<AppDbContext>();
-
-            builder.UseInMemoryDatabase()
-                   .UseInternalServiceProvider(serviceProvider);
-
-            return builder.Options;
         }
     }
 }

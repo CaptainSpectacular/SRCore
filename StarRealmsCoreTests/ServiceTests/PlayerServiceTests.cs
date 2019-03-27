@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Testing;
 using StarRealmsCore.Data;
 using StarRealmsCore.Services;
 using StarRealmsCore.Models.Games;
@@ -12,7 +8,7 @@ using Xunit;
 
 namespace StarRealmsCoreTests.ServiceTests
 {
-    public class PlayerServiceTests
+    public class PlayerServiceTests : IDbConnector
     {
         [Fact]
         public void TestCreatingPlayer()
@@ -74,9 +70,12 @@ namespace StarRealmsCoreTests.ServiceTests
             {
                 var playerService = new PlayerService(context);
                 var gameService = new GameService(context);
-                PlayerCreateCommand player = new PlayerCreateCommand { Name = "ZTO" };
-                GameCreateCommand game1 = new GameCreateCommand { PlayerTurn = 0 };
-                GameCreateCommand game2 = new GameCreateCommand { PlayerTurn = 1 };
+                PlayerCreateCommand player = new PlayerCreateCommand
+                { Name = "ZTO" };
+                GameCreateCommand game1 = new GameCreateCommand
+                { PlayerTurn = 0 };
+                GameCreateCommand game2 = new GameCreateCommand 
+                { PlayerTurn = 1 };
                 PlayerGame pg1 = new PlayerGame
                 {
                     PlayerId = 1,
@@ -105,19 +104,6 @@ namespace StarRealmsCoreTests.ServiceTests
                 Assert.Equal(2, games.Last().PlayerTurn);
             }
 
-        }
-
-        public DbContextOptions<AppDbContext> CreateNewContextOptions()
-        {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkInMemoryDatabase()
-                .BuildServiceProvider();
-
-            var builder = new DbContextOptionsBuilder<AppDbContext>();
-            builder.UseInMemoryDatabase()
-                .UseInternalServiceProvider(serviceProvider);
-
-            return builder.Options;
         }
     }
 }
