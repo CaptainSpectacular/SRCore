@@ -16,11 +16,7 @@ namespace StarRealmsCoreTests.ServiceTests
             using (var context = new AppDbContext(CreateNewContextOptions()))
             {
                 var service = new GameService(context);
-                GameCreateCommand command1 = new GameCreateCommand 
-                {
-                    PlayerTurn = 1
-                };
-
+                GameCreateCommand command1 = new GameCreateCommand(); 
                 GameCreateCommand command2 = new GameCreateCommand();
 
                 service.CreateGame(command1);
@@ -30,8 +26,6 @@ namespace StarRealmsCoreTests.ServiceTests
                 var result2 = context.Games.Find(2);
                 
                 Assert.Equal(2, context.Games.Count());
-                Assert.Equal(1, result1.PlayerTurn); 
-                Assert.Equal(0, result2.PlayerTurn); 
             }
         }
     }
