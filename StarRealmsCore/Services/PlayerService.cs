@@ -47,7 +47,7 @@ namespace StarRealmsCore.Services
                         (pg, g) => new GameViewModel
                         {
                             Id = g.Id,
-                            PlayerTurn = g.PlayerTurn + 1
+                            PlayerTurn = g.PlayerTurn
                         })
                         .ToList()
                 })
@@ -62,12 +62,16 @@ namespace StarRealmsCore.Services
 
         public void CreatePlayerGame(PlayerGameCreateCommand command)
         {
-            Game g = new Game();
-            _context.Games.Add(g);
-            _context.SaveChanges();
-            command.GameId = _context.Games.Last().Id;
             _context.PlayerGames.Add(command.ToPlayerGame());
             _context.SaveChanges();
+        }
+
+        public int CreateGame(GameCreateCommand command)
+        {
+            var game = command.ToGame();
+            _context.Games.Add(game);
+            _context.SaveChanges();
+            return game.Id; 
         }
     }
 }

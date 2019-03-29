@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StarRealmsCore.Services;
 using StarRealmsCore.Models.Players;
+using StarRealmsCore.Models.Games;
 
 namespace StarRealmsCore.Controllers
 {
@@ -34,9 +35,11 @@ namespace StarRealmsCore.Controllers
 
         [HttpPost]
         [Route("Players/{PlayerId}/NewGame")]
-        public IActionResult CreateGame(PlayerGameCreateCommand command)
+        public IActionResult CreateGame(PlayerGameCreateCommand pgCommand, GameCreateCommand gameCommand)
         {
-            _service.CreatePlayerGame(command);
+            int gameId = _service.CreateGame(gameCommand);
+            pgCommand.GameId = gameId;
+            _service.CreatePlayerGame(pgCommand);
             return RedirectToAction(nameof(Index));
         }
     }

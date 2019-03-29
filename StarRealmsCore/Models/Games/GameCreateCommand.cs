@@ -13,10 +13,11 @@ namespace StarRealmsCore.Models.Games
 
         public Game ToGame()
         {
+            Random rnd = new Random();
             return new Game
             {
                 Id = Id,
-                PlayerTurn = PlayerTurn
+                PlayerTurn = rnd.Next(1, 3) 
             };
         }
     }
