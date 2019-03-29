@@ -59,7 +59,6 @@ namespace StarRealmsCoreTests.ServiceTests
                 var result = service.GetPlayers();
 
                 Assert.Equal(2, result.Count());
-
             }
         }
 
@@ -72,10 +71,8 @@ namespace StarRealmsCoreTests.ServiceTests
                 var gameService = new GameService(context);
                 PlayerCreateCommand player = new PlayerCreateCommand
                 { Name = "ZTO" };
-                GameCreateCommand game1 = new GameCreateCommand
-                { PlayerTurn = 0 };
-                GameCreateCommand game2 = new GameCreateCommand 
-                { PlayerTurn = 1 };
+                GameCreateCommand game1 = new GameCreateCommand();
+                GameCreateCommand game2 = new GameCreateCommand(); 
                 PlayerGame pg1 = new PlayerGame
                 {
                     PlayerId = 1,
@@ -100,10 +97,57 @@ namespace StarRealmsCoreTests.ServiceTests
                 Assert.IsType<List<GameViewModel>>(players.Games);
                 Assert.Equal("ZTO", players.Name);
                 Assert.Equal(2, games.Count());
-                Assert.Equal(1, games.First().PlayerTurn);
-                Assert.Equal(2, games.Last().PlayerTurn);
             }
+        }
 
+        [Fact]
+        public void CreateGame()
+        {
+            using (var context = new AppDbContext(CreateNewContextOptions()))
+            {
+                PlayerService service = new PlayerService(context);
+                var game = new GameCreateCommand();
+
+                service.CreateGame(game);
+
+                Assert.Equal(1, context.Games.Count());
+                Assert.Equal(1, context.Games.Last().Id);
+            }
+        }
+
+        [Fact]
+
+        public void CreatePlayerGame()
+        {
+            using (var context = new AppDbContext(CreateNewContextOptions()))
+            {
+                PlayerService service = new PlayerService(context);
+                service.CreatePlayer(new PlayerCreateCommand
+                {
+                    Name = "ZTO"
+                });
+
+                service.CreateGame(new GameCreateCommand());
+                service.CreateGame(new GameCreateCommand());
+
+                PlayerGameCreateCommand pg1 = new PlayerGameCreateCommand
+                {
+                    GameId = 1,
+                    PlayerId = 1
+                };
+                PlayerGameCreateCommand pg2 = new PlayerGameCreateCommand
+                {
+                    GameId = 2,
+                    PlayerId = 1
+                };
+
+                service.CreatePlayerGame(pg1);
+                service.CreatePlayerGame(pg2);
+
+                var expected = service.GetPlayerDetails(1);
+
+                Assert.Equal(2, expected.Games.Count());
+            }
         }
     }
 }
