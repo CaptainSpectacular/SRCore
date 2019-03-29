@@ -30,5 +30,14 @@ namespace StarRealmsCore.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+
+        [HttpPost]
+        [Route("Players/{PlayerId}/NewGame")]
+        public IActionResult CreateGame(PlayerGameCreateCommand command)
+        {
+            _service.CreatePlayerGame(command);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
