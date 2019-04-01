@@ -60,6 +60,11 @@ namespace StarRealmsCore
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
+                    name: "players",
+                    template: "Players/{name?}",
+                    defaults: new { controller = "Players", action="Details" });
+
+                routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
