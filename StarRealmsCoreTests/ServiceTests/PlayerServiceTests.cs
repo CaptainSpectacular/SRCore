@@ -127,26 +127,30 @@ namespace StarRealmsCoreTests.ServiceTests
                     Name = "ZTO"
                 });
 
-                service.CreateGame(new GameCreateCommand());
+                service.CreatePlayer(new PlayerCreateCommand
+                {
+                    Name = "CS"
+                });
+
                 service.CreateGame(new GameCreateCommand());
 
-                PlayerGameCreateCommand pg1 = new PlayerGameCreateCommand
+                PlayerGameCreateCommand pg = new PlayerGameCreateCommand
                 {
                     GameId = 1,
-                    PlayerId = 1
-                };
-                PlayerGameCreateCommand pg2 = new PlayerGameCreateCommand
-                {
-                    GameId = 2,
-                    PlayerId = 1
+                    ChallengerName = "ZTO",
+                    ChallengerId = 1,
+                    TargetName = "CS",
+                    TargetId = 2
                 };
 
-                service.CreatePlayerGame(pg1);
-                service.CreatePlayerGame(pg2);
+                service.CreatePlayerGame(pg);
 
-                var expected = service.GetPlayerDetails("ZTO");
+                var expected1 = service.GetPlayerDetails("ZTO");
+                var expected2 = service.GetPlayerDetails("CS");
 
-                Assert.Equal(2, expected.Games.Count());
+                Assert.Equal(2, context.PlayerGames.Count());
+                Assert.Equal(1, expected1.Games.Count());
+                Assert.Equal(1, expected2.Games.Count());
             }
         }
     }
