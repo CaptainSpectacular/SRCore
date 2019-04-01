@@ -28,7 +28,7 @@ namespace StarRealmsCore.Services
                     (pg, g) => new GameViewModel
                     {
                         Id = g.Id,
-                        PlayerTurn = g.PlayerTurn + 1
+                        PlayerTurn = g.PlayerTurn
                     })
                     .ToList()
             })
