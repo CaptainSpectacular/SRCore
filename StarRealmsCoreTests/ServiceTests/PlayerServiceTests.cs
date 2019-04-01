@@ -29,7 +29,7 @@ namespace StarRealmsCoreTests.ServiceTests
                 service.CreatePlayer(player2);
 
                 var result = service.GetPlayers();
-                var p1 = service.GetPlayerDetails(1);
+                var p1 = service.GetPlayerDetails("ZTO");
 
                 Assert.Equal(2, result.Count());
                 Assert.Equal("ZTO", result.First().Name);
@@ -90,7 +90,7 @@ namespace StarRealmsCoreTests.ServiceTests
                 context.PlayerGames.AddRange(pg1, pg2);
                 context.SaveChanges();
 
-                var players = playerService.GetPlayerDetails(1);
+                var players = playerService.GetPlayerDetails("ZTO");
                 var games = players.Games;
 
                 Assert.IsType<PlayerViewModel>(players);
@@ -144,7 +144,7 @@ namespace StarRealmsCoreTests.ServiceTests
                 service.CreatePlayerGame(pg1);
                 service.CreatePlayerGame(pg2);
 
-                var expected = service.GetPlayerDetails(1);
+                var expected = service.GetPlayerDetails("ZTO");
 
                 Assert.Equal(2, expected.Games.Count());
             }
