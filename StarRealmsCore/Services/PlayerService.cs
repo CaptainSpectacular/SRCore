@@ -35,11 +35,12 @@ namespace StarRealmsCore.Services
             .ToList();
         }
 
-        public PlayerViewModel GetPlayerDetails(int id)
+        public PlayerViewModel GetPlayerDetails(string name)
         {
-            return _context.Players.Where(player => player.Id == id)
+            return _context.Players.Where(player => player.Name == name)
                 .Select(player => new PlayerViewModel
                 {
+                    Id = player.Id,
                     Name = player.Name,
                     Games = player.PlayerGames.Join(_context.Games,
                         pg => pg.GameId,

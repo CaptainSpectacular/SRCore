@@ -24,6 +24,12 @@ namespace StarRealmsCore.Controllers
             return Json(models);
         }
 
+        public IActionResult Details(string name)
+        {
+            var model = _service.GetPlayerDetails(name);
+            return Json(model);
+        }
+
         [HttpPost]
         public IActionResult Create(PlayerCreateCommand command)
         {
@@ -34,11 +40,13 @@ namespace StarRealmsCore.Controllers
 
 
         [HttpPost]
-        [Route("Players/{PlayerId}/NewGame")]
-        public IActionResult CreateGame(PlayerGameCreateCommand pgCommand, GameCreateCommand gameCommand)
+        [Route("Players/{PlayerName}/NewGame")]
+        public IActionResult CreateGame(PlayerGameCreateCommand pgCommand)
         {
-            int gameId = _service.CreateGame(gameCommand);
+            int gameId = _service.CreateGame(new GameCreateCommand());
+            int playerId = _service.GetPlayerDetails(pgCommand.PlayerName).Id;
             pgCommand.GameId = gameId;
+            pgCommand.PlayerId = playerId;
             _service.CreatePlayerGame(pgCommand);
             return RedirectToAction(nameof(Index));
         }

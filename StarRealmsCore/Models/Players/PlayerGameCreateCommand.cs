@@ -6,6 +6,7 @@ namespace StarRealmsCore.Models.Players
     {
         public int GameId { get; set; }
         public int PlayerId { get; set; }
+        public string PlayerName { get; set; }
 
         public PlayerGame ToPlayerGame()
         {
