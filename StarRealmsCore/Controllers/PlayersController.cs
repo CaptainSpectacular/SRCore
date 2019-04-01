@@ -40,15 +40,22 @@ namespace StarRealmsCore.Controllers
 
 
         [HttpPost]
-        [Route("Players/{PlayerName}/NewGame")]
+        [Route("Players/{ChallengerName}/NewGame")]
         public IActionResult CreateGame(PlayerGameCreateCommand pgCommand)
         {
-            int gameId = _service.CreateGame(new GameCreateCommand());
-            int playerId = _service.GetPlayerDetails(pgCommand.PlayerName).Id;
-            pgCommand.GameId = gameId;
-            pgCommand.PlayerId = playerId;
+            pgCommand = setCommandIds(pgCommand);
             _service.CreatePlayerGame(pgCommand);
+
             return RedirectToAction(nameof(Index));
+        }
+
+        private PlayerGameCreateCommand setCommandIds(PlayerGameCreateCommand pgCommand)
+        {
+            pgCommand.GameId = _service.CreateGame(new GameCreateCommand());
+            pgCommand.ChallengerId = _service.GetPlayerDetails(pgCommand.ChallengerName).Id;
+            pgCommand.TargetId = _service.GetPlayerDetails(pgCommand.TargetName).Id;
+
+            return pgCommand;
         }
     }
 }

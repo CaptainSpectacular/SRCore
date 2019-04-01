@@ -63,7 +63,8 @@ namespace StarRealmsCore.Services
 
         public void CreatePlayerGame(PlayerGameCreateCommand command)
         {
-            _context.PlayerGames.Add(command.ToPlayerGame());
+            _context.PlayerGames.Add(command.ToPlayerGameChallenger());
+            _context.PlayerGames.Add(command.ToPlayerGameTarget());
             _context.SaveChanges();
         }
 

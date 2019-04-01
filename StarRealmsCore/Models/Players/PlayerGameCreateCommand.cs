@@ -5,14 +5,25 @@ namespace StarRealmsCore.Models.Players
     public class PlayerGameCreateCommand
     {
         public int GameId { get; set; }
-        public int PlayerId { get; set; }
-        public string PlayerName { get; set; }
+        public int ChallengerId { get; set; }
+        public int TargetId { get; set; }
+        public string ChallengerName { get; set; }
+        public string TargetName { get; set; }
 
-        public PlayerGame ToPlayerGame()
+        public PlayerGame ToPlayerGameChallenger()
         {
             return new PlayerGame
             {
-                PlayerId = PlayerId,
+                PlayerId = ChallengerId,
+                GameId = GameId
+            };
+        }
+
+        public PlayerGame ToPlayerGameTarget()
+        {
+            return new PlayerGame
+            {
+                PlayerId = TargetId,
                 GameId = GameId
             };
         }
