@@ -10,6 +10,8 @@ namespace StarRealmsCore.Data
         public int Id { get; set; }
         public int PlayerId { get; set; }
         public Player Player { get; set; }
+        public int GameId { get; set; }
+        public Game Game { get; set; }
         public int Type { get; set; }
         public ICollection<DeckCard> DeckCards { get; set; }
     }
