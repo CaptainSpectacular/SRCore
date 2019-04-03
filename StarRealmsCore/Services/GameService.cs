@@ -34,10 +34,12 @@ namespace StarRealmsCore.Services
             .ToList();
         }
 
-        public void CreateGame(GameCreateCommand command)
+        public int CreateGame(GameCreateCommand command)
         {
-            _context.Games.Add(command.ToGame());
+            Game game = command.ToGame();
+            _context.Games.Add(game);
             _context.SaveChanges();
+            return game.Id;
         }
 
         public void DeleteGame(int id)
