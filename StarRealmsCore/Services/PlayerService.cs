@@ -55,6 +55,13 @@ namespace StarRealmsCore.Services
                 .SingleOrDefault();
         }
 
+        public int GetPlayerId(string name)
+        {
+            return _context.Players.Where(player => player.Name == name)
+                .Select(player => player.Id)
+                .SingleOrDefault();
+        }
+
         public void CreatePlayer(PlayerCreateCommand command)
         {
             _context.Players.Add(command.ToPlayer());
