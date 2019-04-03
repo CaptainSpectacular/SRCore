@@ -101,7 +101,24 @@ namespace StarRealmsCoreTests.ServiceTests
         }
 
         [Fact]
+        public void GetPlayerId()
+        {
+            using (var context = new AppDbContext(CreateNewContextOptions()))
+            {
+                var service = new PlayerService(context);
+                var player = new PlayerCreateCommand
+                {
+                    Name = "ZTO"
+                };
+                service.CreatePlayer(player);
 
+                int id = service.GetPlayerId("ZTO");
+
+                Assert.Equal(1, id);
+            }
+        }
+
+        [Fact]
         public void CreatePlayerGame()
         {
             using (var context = new AppDbContext(CreateNewContextOptions()))
