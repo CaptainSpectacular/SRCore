@@ -11,29 +11,31 @@ namespace StarRealmsCore.Controllers
 {
     public class PlayersController : Controller
     {
-        readonly PlayerService _service;
+        readonly PlayerService _playerService;
+        readonly GameService _gameService;
 
-        public PlayersController(PlayerService service)
+        public PlayersController(PlayerService playerService, GameService gameService)
         {
-            _service = service;
+            _playerService = playerService;
+            _gameService = gameService;
         }
 
         public IActionResult Index()
         {
-            ICollection<PlayerViewModel> models = _service.GetPlayers();
+            ICollection<PlayerViewModel> models = _playerService.GetPlayers();
             return Json(models);
         }
 
         public IActionResult Details(string name)
         {
-            var model = _service.GetPlayerDetails(name);
+            var model = _playerService.GetPlayerDetails(name);
             return Json(model);
         }
 
         [HttpPost]
         public IActionResult Create(PlayerCreateCommand command)
         {
-            _service.CreatePlayer(command);
+            _playerService.CreatePlayer(command);
 
             return RedirectToAction(nameof(Index));
         }
@@ -44,16 +46,16 @@ namespace StarRealmsCore.Controllers
         public IActionResult CreateGame(PlayerGameCreateCommand pgCommand)
         {
             pgCommand = setCommandIds(pgCommand);
-            _service.CreatePlayerGame(pgCommand);
+            _playerService.CreatePlayerGame(pgCommand);
 
             return RedirectToAction(nameof(Index));
         }
 
         private PlayerGameCreateCommand setCommandIds(PlayerGameCreateCommand pgCommand)
         {
-            pgCommand.GameId = _service.CreateGame(new GameCreateCommand());
-            pgCommand.ChallengerId = _service.GetPlayerDetails(pgCommand.ChallengerName).Id;
-            pgCommand.TargetId = _service.GetPlayerDetails(pgCommand.TargetName).Id;
+            pgCommand.GameId = _gameService.CreateGame(new GameCreateCommand());
+            pgCommand.ChallengerId = _playerService.GetPlayerDetails(pgCommand.ChallengerName).Id;
+            pgCommand.TargetId = _playerService.GetPlayerDetails(pgCommand.TargetName).Id;
 
             return pgCommand;
         }
