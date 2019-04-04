@@ -37,6 +37,7 @@ namespace StarRealmsCore
                 .BuildServiceProvider();
 
             services.AddScoped<GameService>();
+            services.AddScoped<DeckService>();
             services.AddScoped<PlayerService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
