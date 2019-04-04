@@ -48,5 +48,12 @@ namespace StarRealmsCore.Services
             _context.Games.Remove(game);
             _context.SaveChanges();
         }
+
+        public void CreatePlayerGames(GameCreateCommand cmd)
+        {
+            _context.PlayerGames.Add(cmd.ToPGChallenger());
+            _context.PlayerGames.Add(cmd.ToPGTarget());
+            _context.SaveChanges();
+        }
     }
 }

@@ -39,25 +39,5 @@ namespace StarRealmsCore.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-
-        [HttpPost]
-        [Route("Players/{ChallengerName}/NewGame")]
-        public IActionResult CreateGame(PlayerGameCreateCommand cmd)
-        {
-            cmd = setCommandIds(cmd);
-            _playerService.CreatePlayerGame(cmd);
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        private PlayerGameCreateCommand setCommandIds(PlayerGameCreateCommand cmd)
-        {
-            cmd.GameId = _gameService.CreateGame(new GameCreateCommand());
-            cmd.ChallengerId = _playerService.GetPlayerId(cmd.ChallengerName);
-            cmd.TargetId = _playerService.GetPlayerId(cmd.TargetName);
-
-            return cmd;
-        }
     }
 }

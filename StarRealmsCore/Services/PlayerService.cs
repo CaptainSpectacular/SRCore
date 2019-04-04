@@ -67,12 +67,5 @@ namespace StarRealmsCore.Services
             _context.Players.Add(command.ToPlayer());
             _context.SaveChanges();
         }
-
-        public void CreatePlayerGame(PlayerGameCreateCommand command)
-        {
-            _context.PlayerGames.Add(command.ToPlayerGameChallenger());
-            _context.PlayerGames.Add(command.ToPlayerGameTarget());
-            _context.SaveChanges();
-        }
     }
 }

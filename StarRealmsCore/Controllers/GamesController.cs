@@ -10,16 +10,18 @@ namespace StarRealmsCore.Controllers
 {
     public class GamesController : Controller
     {
-        readonly GameService _service;
+        readonly GameService _gameService;
+        readonly DeckService _deckService;
 
-        public GamesController(GameService service)
+        public GamesController(GameService gameService, DeckService deckService)
         {
-            _service = service;
+            _gameService = gameService;
+            _deckService = deckService;
         }
 
         public IActionResult Index()
         {
-            var models = _service.GetGames();
+            var models = _gameService.GetGames();
             if (!ModelState.IsValid)
             {
                 return StatusCode(400);
@@ -28,10 +30,15 @@ namespace StarRealmsCore.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(GameCreateCommand command)
+        [Route("Players/{ChallengerName}/NewGame")]
+        public IActionResult Create(GameCreateCommand cmd)
         {
 
-            _service.CreateGame(command);
+            cmd.Id = _gameService.CreateGame(cmd);
+            _gameService.CreatePlayerGames(cmd);
+            _deckService.CreateDeck(cmd.ToChallengerDeck());
+            _deckService.CreateDeck(cmd.ToTargetDeck());
+            
             return RedirectToAction(nameof(Index));
         }
     }
