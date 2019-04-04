@@ -117,44 +117,5 @@ namespace StarRealmsCoreTests.ServiceTests
                 Assert.Equal(1, id);
             }
         }
-
-        [Fact]
-        public void CreatePlayerGame()
-        {
-            using (var context = new AppDbContext(CreateNewContextOptions()))
-            {
-                PlayerService playerService = new PlayerService(context);
-                GameService gameService = new GameService(context);
-                playerService.CreatePlayer(new PlayerCreateCommand
-                {
-                    Name = "ZTO"
-                });
-
-                playerService.CreatePlayer(new PlayerCreateCommand
-                {
-                    Name = "CS"
-                });
-
-                gameService.CreateGame(new GameCreateCommand());
-
-                PlayerGameCreateCommand pg = new PlayerGameCreateCommand
-                {
-                    GameId = 1,
-                    ChallengerName = "ZTO",
-                    ChallengerId = 1,
-                    TargetName = "CS",
-                    TargetId = 2
-                };
-
-                playerService.CreatePlayerGame(pg);
-
-                var expected1 = playerService.GetPlayerDetails("ZTO");
-                var expected2 = playerService.GetPlayerDetails("CS");
-
-                Assert.Equal(2, context.PlayerGames.Count());
-                Assert.Equal(1, expected1.Games.Count());
-                Assert.Equal(1, expected2.Games.Count());
-            }
-        }
     }
 }
