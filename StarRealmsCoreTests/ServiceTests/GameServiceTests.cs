@@ -3,6 +3,8 @@ using System.Linq;
 using StarRealmsCore.Data;
 using StarRealmsCore.Services;
 using StarRealmsCore.Models.Games;
+using StarRealmsCore.Models.Players;
+using StarRealmsCore.Models.Decks;
 using Xunit;
 
 namespace StarRealmsCoreTests.ServiceTests
@@ -28,5 +30,43 @@ namespace StarRealmsCoreTests.ServiceTests
                 Assert.Equal(2, context.Games.Count());
             }
         }
+
+        [Fact]
+        public void CreatePlayerGame()
+        {
+            using (var context = new AppDbContext(CreateNewContextOptions()))
+            {
+                PlayerService playerService = new PlayerService(context);
+                GameService gameService = new GameService(context);
+                playerService.CreatePlayer(new PlayerCreateCommand
+                {
+                    Name = "ZTO"
+                });
+
+                playerService.CreatePlayer(new PlayerCreateCommand
+                {
+                    Name = "CS"
+                });
+                
+                var gcCommand = new GameCreateCommand
+                {
+                    ChallengerId = 1,
+                    TargetId = 2
+                };
+
+                int gameId = gameService.CreateGame(gcCommand);
+                gcCommand.Id = gameId;
+
+                gameService.CreatePlayerGames(gcCommand);
+
+                var expected1 = playerService.GetPlayerDetails("ZTO");
+                var expected2 = playerService.GetPlayerDetails("CS");
+
+                Assert.Equal(2, context.PlayerGames.Count());
+                Assert.Equal(1, expected1.Games.Count());
+                Assert.Equal(1, expected2.Games.Count());
+            }
+        }
+
     }
 }
