@@ -41,6 +41,7 @@ namespace StarRealmsCore.Models.Games
                 PlayerId = TargetId
             };
         }
+
         public DeckCreateCommand ToChallengerDeck()
         {
             return new DeckCreateCommand
